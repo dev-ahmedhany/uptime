@@ -1,5 +1,7 @@
 # uptime
 
+[![Deploy to Cloudflare Workers](https://deploy.workers.cloudflare.com/button)](https://deploy.workers.cloudflare.com/?url=https://github.com/dev-ahmedhany/uptime)
+
 <!--start: description-->
 
 **Upptime** is the open-source uptime monitor and status page, powered entirely by Cloudflare Worker. It's made with 💚 by your friends at [Ahmed](https://github.com/dev-ahmedhany).
