@@ -19,11 +19,12 @@ export default function Line() {
     useEffect(() => {
         let items = [];
         for (let i = 0; i < data.length; i++) {
-            const element = data[i].data;
-            for (let j = 0; j < element.length; j++) {
-                const item = element[j];
+            const element = data[i];
+            for (let j = 0; j < element.data.length; j++) {
+                const item = element.data[j];
                 if (item.secondary < 1) {
-                    items.push(<li key={j}>{`${element.label} -- ${(new Date(item.primary)).toTimeString()} -- Error Code:${Number(item.secondary) * 1000}`}</li>)
+                    const date = new Date(item.primary);
+                    items.push(<li key={j}>{`${element.label} -- ${date.toLocaleDateString("en-US")} ${date.toLocaleTimeString("en-US")} -- Error Code:${Number(item.secondary) * 1000}`}</li>)
                 }
             }
         }
