@@ -2,7 +2,7 @@
 
 <!--start: description-->
 
-**Upptime** is the open-source uptime monitor and status page, powered entirely by Cloudflare Worker. It's made with 💚 by [Ahmed Hany](https://github.com/dev-ahmedhany).
+**uptime** is the open-source uptime monitor and status page, powered entirely by Cloudflare Worker. It's made with 💚 by [Ahmed Hany](https://github.com/dev-ahmedhany).
 
 <!--end: description-->
 
@@ -30,8 +30,9 @@
 _uptime is not affiliated to or endorsed by GitHub._
 
 
-## 💝 Who's using uptime
+## 💝 live DEMO
 
+[Aswan University monitor](https://theuptime.siteuptime.workers.dev/).
 
 ## 👩‍💻 Documentation
 
