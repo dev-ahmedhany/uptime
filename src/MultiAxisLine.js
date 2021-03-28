@@ -23,7 +23,7 @@ export default function Line() {
             for (let j = 0; j < element.length; j++) {
                 const item = element[j];
                 if (item.secondary < 1) {
-                    items.push(<li key={j}>{element.label + Number(item.secondary) * 1000}</li>)
+                    items.push(<li key={j}>{`${element.label} -- ${(new Date(item.primary)).toTimeString()} -- Error Code:${Number(item.secondary) * 1000}`}</li>)
                 }
             }
         }
