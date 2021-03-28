@@ -14,7 +14,7 @@ export default function Line() {
         }
 
         fetchData();
-    });
+    }, []);
 
 
     const series = React.useMemo(
