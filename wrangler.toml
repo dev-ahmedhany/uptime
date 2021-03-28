@@ -1,4 +1,0 @@
-name = "web"
-account_id = "6ad69f99d85af5e88536f06ecb2af732" # siteuptime.workers.dev
-type = "webpack"
-workers_dev = true

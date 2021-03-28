@@ -6,8 +6,8 @@ function App() {
     <div className="App">
       <header className="App-header">
         <p>
-          Cloudflare-powered <code>open-source</code> uptime monitor <br />
-          and status page made with ♥ by Ahmed Hany
+          Cloudflare <code>Worker</code> uptime monitor<br />
+          and status page made with 💚 by Ahmed Hany
         </p>
         <MultiAxisLine />
         <a
