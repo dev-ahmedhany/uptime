@@ -9,7 +9,7 @@ export default function Line() {
 
     useEffect(() => {
         async function fetchData() {
-            const res = await fetch("https://theuptime.siteuptime.workers.dev/");
+            const res = await fetch("/API");
             res.json().then(res => setData(res));
         }
 
