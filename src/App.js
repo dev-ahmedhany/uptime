@@ -15,7 +15,7 @@ function App() {
         <MultiAxisLine />
         <a
           className="App-link"
-          href="https://reactjs.org"
+          href="https://github.com/dev-ahmedhany/uptime"
           target="_blank"
           rel="noopener noreferrer"
         >
