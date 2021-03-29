@@ -8,7 +8,8 @@ export default function ResizableBox({
   width = 500,
   height = 300,
   resizable = true,
-  style = {},
+  style = {
+  },
   className
 }) {
   return (
