@@ -29,7 +29,7 @@ export default function Line() {
                     result = JSON.parse(Scheme);
                     let newValue = [];
                     let i, j, temparray, chunk = 15;
-                    for (i = 1, j = AllData.length; i < j; i += chunk) {///// i= 1 !!! to ignore 00:00 result
+                    for (i = 0, j = AllData.length; i < j; i += chunk) {///// i= 1 !!! to ignore 00:00 result
                         temparray = AllData.slice(i, i + chunk);
                         // do whatever
                         const averageDate = (Number(temparray[temparray.length - 1].k) + Number(temparray[0].k)) / 2 - 0.5;
