@@ -28,7 +28,7 @@ export default function Line() {
 
                     result = JSON.parse(Scheme);
                     let newValue = [];
-                    let i, j, temparray, chunk = 30;
+                    let i, j, temparray, chunk = 5;
                     for (i = 0, j = AllData.length; i < j; i += chunk) {///// i= 1 !!! to ignore 00:00 result
                         temparray = AllData.slice(i, i + chunk);
                         // do whatever
