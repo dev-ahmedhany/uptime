@@ -12,10 +12,11 @@ export default function Line() {
         async function fetchData() {
             const res = await fetch("/API");
             if (res.ok) {
-                res.json().then(res => setData(res));
-                document.getElementById("resizable").style = "position: relative; user-select: auto; width: 91vw; height: 45vw; box-sizing: border-box; flex-shrink: 0;";
+                res.json().then(res => {
+                    setData(res);
+                    document.getElementById("resizable").style = "position: relative; user-select: auto; width: 91vw; height: 45vw; box-sizing: border-box; flex-shrink: 0;";
+                });
             }
-
         }
         fetchData();
 
