@@ -9,6 +9,7 @@ function App() {
           and status page made with 💚 by Ahmed Hany
         </p>
       <MultiAxisLine />
+      <br />
       <a
         className="App-link"
         href="https://github.com/dev-ahmedhany/uptime"

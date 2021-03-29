@@ -13,7 +13,7 @@ export default function Line() {
             const res = await fetch("/API");
             if (res.ok) {
                 res.json().then(res => setData(res));
-                document.getElementById("resizable").style = "position: relative; user-select: auto; width: 71vw; height: 40vw; box-sizing: border-box; flex-shrink: 0;";
+                document.getElementById("resizable").style = "position: relative; user-select: auto; width: 91vw; height: 45vw; box-sizing: border-box; flex-shrink: 0;";
             }
 
         }
@@ -53,8 +53,8 @@ export default function Line() {
         <>
             <Resizable id="resizable"
                 defaultSize={{
-                    width: "70vw",
-                    height: "40vw",
+                    width: "90vw",
+                    height: "45vw",
                 }}
             >
                 <Chart data={data} series={series} axes={axes} tooltip dark />
