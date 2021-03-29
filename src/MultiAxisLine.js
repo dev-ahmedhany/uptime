@@ -46,7 +46,7 @@ export default function Line() {
     )
     return (
         <>
-            <ResizableBox width={800} height={400}>
+            <ResizableBox>
                 <Chart data={data} series={series} axes={axes} tooltip dark />
             </ResizableBox>
             {info}
