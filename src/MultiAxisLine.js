@@ -15,7 +15,7 @@ export default function Line() {
             if (res.ok) {
                 res.json().then(res => {
                     let { result, timeinterval, AllData } = res;
-                    let resultorg = result;//save
+                    let Scheme = JSON.stringify(result);
 
                     for (let i = 0; i < AllData.length; i++) {
                         const time = Number(AllData[i].k) * timeinterval;
@@ -26,7 +26,7 @@ export default function Line() {
                     setData(result);
                     document.getElementById("resizable").style = "position: relative; user-select: auto; width: 91vw; height: 45vw; box-sizing: border-box; flex-shrink: 0;";
 
-                    result = resultorg;
+                    result = JSON.parse(Scheme);
                     let newValue = [];
                     let i, j, temparray, chunk = 15;
                     for (i = 1, j = AllData.length; i < j; i += chunk) {///// i= 1 !!! to ignore 00:00 result
