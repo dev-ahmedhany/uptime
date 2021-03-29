@@ -6,6 +6,7 @@ import { Resizable } from "re-resizable";
 export default function Line() {
     // series array
     const [data, setData] = useState([{ "label": "Google", "data": [{ "primary": 1616913960000, "secondary": 63 }, { "primary": 1616914080000, "secondary": 51 }, { "primary": 1616914200000, "secondary": 54 }, { "primary": 1616914320000, "secondary": 53 },] }]);
+    const [dataAvg, setDataAvg] = useState([{ "label": "Google", "data": [{ "primary": 1616913960000, "secondary": 63 }, { "primary": 1616914080000, "secondary": 51 }, { "primary": 1616914200000, "secondary": 54 }, { "primary": 1616914320000, "secondary": 53 },] }]);
     const [info, setInfo] = useState();
 
     useEffect(() => {
@@ -14,6 +15,15 @@ export default function Line() {
             if (res.ok) {
                 res.json().then(res => {
                     let { result, timeinterval, AllData } = res;
+
+                    for (let i = 0; i < AllData.length; i++) {
+                        const time = Number(AllData[i].k) * timeinterval;
+                        for (let j = 0; j < result.length; j++) {
+                            result[j].data.push({ primary: time, secondary: AllData[i].v[j] });
+                        }
+                    }
+                    setData(result);
+                    document.getElementById("resizable").style = "position: relative; user-select: auto; width: 91vw; height: 45vw; box-sizing: border-box; flex-shrink: 0;";
 
                     let newValue = [];
                     let i, j, temparray, chunk = 15;
@@ -37,8 +47,8 @@ export default function Line() {
                             result[j].data.push({ primary: time, secondary: AllData[i].v[j] });
                         }
                     }
-                    setData(result);
-                    document.getElementById("resizable").style = "position: relative; user-select: auto; width: 91vw; height: 45vw; box-sizing: border-box; flex-shrink: 0;";
+                    setDataAvg(result);
+                    document.getElementById("resizable2").style = "position: relative; user-select: auto; width: 91vw; height: 45vw; box-sizing: border-box; flex-shrink: 0;";
                 });
             }
         }
@@ -76,13 +86,14 @@ export default function Line() {
     )
     return (
         <>
-            <Resizable id="resizable"
-                defaultSize={{
-                    width: "90vw",
-                    height: "45vw",
-                }}
-            >
+            <Resizable id="resizable" defaultSize={{ width: "90vw", height: "45vw", }}>
                 <Chart data={data} series={series} axes={axes} tooltip dark />
+            </Resizable>
+            <br />
+            <h2>Average</h2>
+            <br />
+            <Resizable id="resizable2" defaultSize={{ width: "90vw", height: "45vw", }}>
+                <Chart data={dataAvg} series={series} axes={axes} tooltip dark />
             </Resizable>
             {info}
         </>
