@@ -14,8 +14,9 @@ export default function Line() {
             const res = await fetch("/API");
             if (res.ok) {
                 res.json().then(res => {
-                    let { result, timeinterval, AllData } = res;
+                    let { resultorg, timeinterval, AllData } = res;
 
+                    let result = resultorg;
                     for (let i = 0; i < AllData.length; i++) {
                         const time = Number(AllData[i].k) * timeinterval;
                         for (let j = 0; j < result.length; j++) {
@@ -25,6 +26,7 @@ export default function Line() {
                     setData(result);
                     document.getElementById("resizable").style = "position: relative; user-select: auto; width: 91vw; height: 45vw; box-sizing: border-box; flex-shrink: 0;";
 
+                    result = resultorg;
                     let newValue = [];
                     let i, j, temparray, chunk = 15;
                     for (i = 0, j = AllData.length; i < j; i += chunk) {
