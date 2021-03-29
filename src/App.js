@@ -17,6 +17,7 @@ function App() {
       >
         Github repo
         </a>
+      <br />
     </div>
   );
 }

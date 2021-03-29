@@ -16,9 +16,11 @@ export default function Line() {
             }
         }
         fetchData();
+
     }, []);
 
     useEffect(() => {
+        document.getElementById("resizable").style = "position: relative; user-select: auto; width: 71vw; height: 40vw; box-sizing: border-box; flex-shrink: 0;";
         let items = [];
         for (let i = 0; i < data.length; i++) {
             const element = data[i];
@@ -48,7 +50,7 @@ export default function Line() {
     )
     return (
         <>
-            <Resizable
+            <Resizable id="resizable"
                 defaultSize={{
                     width: "70vw",
                     height: "40vw",
