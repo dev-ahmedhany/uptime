@@ -33,13 +33,13 @@ export default function Line() {
                     for (i = 0, j = Object.keys(data).length; i < j; i += chunk) {///// i= 1 !!! to ignore 00:00 result
                         temparray = Object.entries(data).slice(i, i + chunk);
                         // do whatever
-                        const averageDate = (Number(temparray[temparray.length - 1].k) + Number(temparray[0].k)) / 2 + 0.5;
+                        const averageDate = (Number(temparray[temparray.length - 1][0]) + Number(temparray[0][0])) / 2 + 0.5;
                         let averageArray = [];
                         for (let k = 0; k < result.length; k++) {
-                            const average = temparray.reduce((prev, crnt) => prev + Number(crnt.v[k]), 0) / temparray.length;
+                            const average = temparray.reduce((prev, crnt) => prev + Number(crnt[1][k]), 0) / temparray.length;
                             averageArray.push(average);
                         }
-                        newValue.push({ k: averageDate, v: averageArray });
+                        newValue[averageDate] = averageArray;
                     }
 
                     data = newValue;
