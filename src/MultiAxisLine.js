@@ -20,10 +20,10 @@ export default function Line() {
                     for (i = 0, j = AllData.length; i < j; i += chunk) {
                         temparray = AllData.slice(i, i + chunk);
                         // do whatever
-                        const averageDate = temparray.reduce((prev, crnt) => prev + Number(crnt.k[i]), 0) / temparray.length;
+                        const averageDate = temparray.reduce((prev, crnt) => prev + Number(crnt.k), 0) / temparray.length;
                         let averageArray = [];
                         for (let k = 0; k < result.length; k++) {
-                            const average = temparray.reduce((prev, crnt) => prev + Number(crnt.v[i]), 0) / temparray.length;
+                            const average = temparray.reduce((prev, crnt) => prev + Number(crnt.v[k]), 0) / temparray.length;
                             averageArray.push(average);
                         }
                         newValue.push({ k: averageDate, v: averageArray });
