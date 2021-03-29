@@ -14,6 +14,23 @@ export default function Line() {
             if (res.ok) {
                 res.json().then(res => {
                     let { result, timeinterval, AllData } = res;
+
+                    let newValue = [];
+                    let i, j, temparray, chunk = 15;
+                    for (i = 0, j = AllData.length; i < j; i += chunk) {
+                        temparray = AllData.slice(i, i + chunk);
+                        // do whatever
+                        const averageDate = temparray.reduce((accumulator, currentValue) => accumulator + currentValue.k[i]) / temparray.length;
+                        let averageArray = [];
+                        for (let k = 0; k < result.length; k++) {
+                            const average = temparray.reduce((accumulator, currentValue) => accumulator + currentValue.v[i]) / temparray.length;
+                            averageArray.push(average);
+                        }
+                        newValue.push({ k: averageDate, v: averageArray });
+                    }
+
+                    AllData = newValue;
+
                     for (let i = 0; i < AllData.length; i++) {
                         const time = Number(AllData[i].k) * timeinterval;
                         for (let j = 0; j < result.length; j++) {
