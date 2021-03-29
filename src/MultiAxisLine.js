@@ -13,7 +13,14 @@ export default function Line() {
             const res = await fetch("/API");
             if (res.ok) {
                 res.json().then(res => {
-                    setData(res);
+                    let { result, timeinterval, AllData } = res;
+                    for (let i = 0; i < AllData.length; i++) {
+                        const time = Number(AllData[i].k) * timeinterval;
+                        for (let j = 0; j < result.length; j++) {
+                            result[j].data.push({ primary: time, secondary: AllData[i].v[j] });
+                        }
+                    }
+                    setData(result);
                     document.getElementById("resizable").style = "position: relative; user-select: auto; width: 91vw; height: 45vw; box-sizing: border-box; flex-shrink: 0;";
                 });
             }
