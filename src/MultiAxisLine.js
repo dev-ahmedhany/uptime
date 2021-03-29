@@ -14,23 +14,24 @@ export default function Line() {
             const res = await fetch("/API");
             if (res.ok) {
                 res.json().then(res => {
-                    let { result, timeinterval, AllData } = res;
+                    let { result, timeInterval, data } = res;
                     let Scheme = JSON.stringify(result);
 
-                    for (let i = 0; i < AllData.length; i++) {
-                        const time = Number(AllData[i].k) * timeinterval;
+                    for (const timeStamp in data) {
+                        const time = Number(timeStamp) * timeInterval;
                         for (let j = 0; j < result.length; j++) {
-                            result[j].data.push({ primary: time, secondary: AllData[i].v[j] });
+                            result[j].data.push({ primary: time, secondary: data[timeStamp][j] });
                         }
                     }
+
                     setData(result);
                     document.getElementById("resizable").style = "position: relative; user-select: auto; width: 91vw; height: 45vw; box-sizing: border-box; flex-shrink: 0;";
 
                     result = JSON.parse(Scheme);
                     let newValue = [];
                     let i, j, temparray, chunk = 5;
-                    for (i = 0, j = AllData.length; i < j; i += chunk) {///// i= 1 !!! to ignore 00:00 result
-                        temparray = AllData.slice(i, i + chunk);
+                    for (i = 0, j = Object.keys(data).length; i < j; i += chunk) {///// i= 1 !!! to ignore 00:00 result
+                        temparray = Object.entries(data).slice(i, i + chunk);
                         // do whatever
                         const averageDate = (Number(temparray[temparray.length - 1].k) + Number(temparray[0].k)) / 2 + 0.5;
                         let averageArray = [];
@@ -41,12 +42,12 @@ export default function Line() {
                         newValue.push({ k: averageDate, v: averageArray });
                     }
 
-                    AllData = newValue;
+                    data = newValue;
 
-                    for (let i = 0; i < AllData.length; i++) {
-                        const time = Number(AllData[i].k) * timeinterval;
+                    for (const timeStamp in data) {
+                        const time = Number(timeStamp) * timeInterval;
                         for (let j = 0; j < result.length; j++) {
-                            result[j].data.push({ primary: time, secondary: AllData[i].v[j] });
+                            result[j].data.push({ primary: time, secondary: data[timeStamp][j] });
                         }
                     }
                     setDataAvg(result);
