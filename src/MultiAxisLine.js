@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 //
 import { Chart } from 'react-charts'
-import ResizableBox from "./ResizableBox";
+import { Resizable } from "re-resizable";
 
 export default function Line() {
     // series array
@@ -11,7 +11,9 @@ export default function Line() {
     useEffect(() => {
         async function fetchData() {
             const res = await fetch("/API");
-            res.json().then(res => setData(res));
+            if (res.ok) {
+                res.json().then(res => setData(res));
+            }
         }
         fetchData();
     }, []);
@@ -46,9 +48,14 @@ export default function Line() {
     )
     return (
         <>
-            <ResizableBox>
+            <Resizable
+                defaultSize={{
+                    width: "70vw",
+                    height: "40vw",
+                }}
+            >
                 <Chart data={data} series={series} axes={axes} tooltip dark />
-            </ResizableBox>
+            </Resizable>
             {info}
         </>
     )
