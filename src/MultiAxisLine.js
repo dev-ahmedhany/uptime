@@ -14,9 +14,9 @@ export default function Line() {
             const res = await fetch("/API");
             if (res.ok) {
                 res.json().then(res => {
-                    let { resultorg, timeinterval, AllData } = res;
+                    let { result, timeinterval, AllData } = res;
+                    let resultorg = result;//save
 
-                    let result = resultorg;
                     for (let i = 0; i < AllData.length; i++) {
                         const time = Number(AllData[i].k) * timeinterval;
                         for (let j = 0; j < result.length; j++) {
@@ -29,7 +29,7 @@ export default function Line() {
                     result = resultorg;
                     let newValue = [];
                     let i, j, temparray, chunk = 15;
-                    for (i = 0, j = AllData.length; i < j; i += chunk) {
+                    for (i = 1, j = AllData.length; i < j; i += chunk) {///// i= 1 !!! to ignore 00:00 result
                         temparray = AllData.slice(i, i + chunk);
                         // do whatever
                         const averageDate = temparray.reduce((prev, crnt) => prev + Number(crnt.k), 0) / temparray.length;
