@@ -28,11 +28,11 @@ export default function Line() {
 
                     result = JSON.parse(Scheme);
                     let newValue = [];
-                    let i, j, temparray, chunk = 15;
+                    let i, j, temparray, chunk = 30;
                     for (i = 0, j = AllData.length; i < j; i += chunk) {///// i= 1 !!! to ignore 00:00 result
                         temparray = AllData.slice(i, i + chunk);
                         // do whatever
-                        const averageDate = (Number(temparray[temparray.length - 1].k) + Number(temparray[0].k)) / 2 - 0.5;
+                        const averageDate = (Number(temparray[temparray.length - 1].k) + Number(temparray[0].k)) / 2 + 0.5;
                         let averageArray = [];
                         for (let k = 0; k < result.length; k++) {
                             const average = temparray.reduce((prev, crnt) => prev + Number(crnt.v[k]), 0) / temparray.length;
