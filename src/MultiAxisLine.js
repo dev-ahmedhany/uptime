@@ -2,12 +2,15 @@ import React, { useState, useEffect } from 'react'
 //
 import { Chart } from 'react-charts'
 import { Resizable } from "re-resizable";
+import Slider from '@material-ui/core/Slider';
 
 export default function Line() {
     // series array
     const [data, setData] = useState([{ "label": "Google", "data": [{ "primary": 1616913960000, "secondary": 63 }, { "primary": 1616914080000, "secondary": 51 }, { "primary": 1616914200000, "secondary": 54 }, { "primary": 1616914320000, "secondary": 53 },] }]);
+    const [dataSource, setDataSource] = useState();
     const [dataAvg, setDataAvg] = useState([{ "label": "Google", "data": [{ "primary": 1616913960000, "secondary": 63 }, { "primary": 1616914080000, "secondary": 51 }, { "primary": 1616914200000, "secondary": 54 }, { "primary": 1616914320000, "secondary": 53 },] }]);
     const [info, setInfo] = useState();
+    const [chunkSize, setChunkSize] = React.useState(10);
 
     useEffect(() => {
         async function fetchData() {
@@ -15,7 +18,7 @@ export default function Line() {
             if (res.ok) {
                 res.json().then(res => {
                     let { result, timeInterval, data } = res;
-                    let Scheme = JSON.stringify(result);
+                    setDataSource(res);
 
                     for (const timeStamp in data) {
                         const time = Number(timeStamp) * timeInterval;
@@ -26,36 +29,6 @@ export default function Line() {
 
                     setData(result);
                     document.getElementById("resizable").style = "position: relative; user-select: auto; width: 91vw; height: 45vw; box-sizing: border-box; flex-shrink: 0;";
-
-                    result = JSON.parse(Scheme);
-                    let newValue = [];
-                    let i, j, temparray, chunk = 5;
-                    const list = Object.entries(data);
-
-                    for (i = 0, j = Object.keys(data).length; i < j; i += chunk) {///// i= 1 !!! to ignore 00:00 result
-                        temparray = list.slice(i, i + chunk);
-                        // do whatever
-                        if (temparray.length > 1) {
-                            const averageDate = (Number(temparray[temparray.length - 1][0]) + Number(temparray[0][0])) / 2 + 0.5;
-                            let averageArray = [];
-                            for (let k = 0; k < result.length; k++) {
-                                const average = temparray.reduce((prev, crnt) => prev + Number(crnt[1][k]), 0) / temparray.length;
-                                averageArray.push(average);
-                            }
-                            newValue[averageDate] = averageArray;
-                        }
-                    }
-
-                    data = newValue;
-
-                    for (const timeStamp in data) {
-                        const time = Number(timeStamp) * timeInterval;
-                        for (let j = 0; j < result.length; j++) {
-                            result[j].data.push({ primary: time, secondary: data[timeStamp][j] });
-                        }
-                    }
-                    setDataAvg(result);
-                    document.getElementById("resizable2").style = "position: relative; user-select: auto; width: 91vw; height: 45vw; box-sizing: border-box; flex-shrink: 0;";
                 });
             }
         }
@@ -78,6 +51,43 @@ export default function Line() {
         setInfo(items);
     }, [data]);
 
+    const handleChange = (event, newValue) => {
+        setChunkSize(newValue);
+    };
+
+    useEffect(() => {
+        if (!dataSource) return;
+        let { result, timeInterval, data } = dataSource;
+        let newValue = [];
+        let i, j, temparray, chunk = chunkSize;
+        const list = Object.entries(data);
+
+        for (i = 0, j = Object.keys(data).length; i < j; i += chunk) {///// i= 1 !!! to ignore 00:00 result
+            temparray = list.slice(i, i + chunk);
+            // do whatever
+            if (temparray.length > 1) {
+                const averageDate = (Number(temparray[temparray.length - 1][0]) + Number(temparray[0][0])) / 2 + 0.5;
+                let averageArray = [];
+                for (let k = 0; k < result.length; k++) {
+                    const average = temparray.reduce((prev, crnt) => prev + Number(crnt[1][k]), 0) / temparray.length;
+                    averageArray.push(average);
+                }
+                newValue[averageDate] = averageArray;
+            }
+        }
+
+        data = newValue;
+
+        for (const timeStamp in data) {
+            const time = Number(timeStamp) * timeInterval;
+            for (let j = 0; j < result.length; j++) {
+                result[j].data.push({ primary: time, secondary: data[timeStamp][j] });
+            }
+        }
+        setDataAvg(result);
+
+    }, [chunkSize, dataSource]);
+
     const series = React.useMemo(
         () => ({
             showPoints: false
@@ -99,9 +109,10 @@ export default function Line() {
             <br />
             <h2>Average</h2>
             <br />
-            <Resizable id="resizable2" defaultSize={{ width: "90vw", height: "45vw", }}>
+            <Resizable id="resizable" defaultSize={{ width: "90vw", height: "45vw", }}>
                 <Chart data={dataAvg} series={series} axes={axes} tooltip dark />
             </Resizable>
+            <Slider value={chunkSize} onChange={handleChange} aria-labelledby="continuous-slider" />
             {info}
         </>
     )
