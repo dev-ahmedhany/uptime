@@ -17,6 +17,7 @@ const getAvgFunction = function (chunkSize, dataSource) {
 
         let averageDate = (Number(temparray[temparray.length - 1][0]) + Number(temparray[0][0])) / 2 + 0.5;
         averageDate = averageDate % 1 === 0.5 ? averageDate : averageDate + 0.5;
+        averageDate = (chunk % 2 == 0) ? averageDate - 0.5 : averageDate;
 
         let averageArray = [];
         for (let k = 0; k < result.length; k++) {
@@ -95,6 +96,7 @@ export default function Line() {
         if (!dataSource) return;
         if (!getAvgFunction) return;
         setDataAvg(getAvgFunction(chunkSize, JSON.stringify(dataSource)));
+        document.getElementById("resizable2").style = "position: relative; user-select: auto; width: 91vw; height: 45vw; box-sizing: border-box; flex-shrink: 0;";
     }, [chunkSize, dataSource]);
 
     const series = React.useMemo(
@@ -118,7 +120,7 @@ export default function Line() {
             <br />
             <h2>Average</h2>
             <br />
-            <Resizable id="resizable" defaultSize={{ width: "90vw", height: "45vw", }}>
+            <Resizable id="resizable2" defaultSize={{ width: "90vw", height: "45vw", }}>
                 <Chart data={dataAvg} series={series} axes={axes} tooltip dark />
             </Resizable>
             <Slider min={2} max={360} value={chunkSize} onChange={handleChange} style={{ width: "50vw" }} valueLabelDisplay="auto"
