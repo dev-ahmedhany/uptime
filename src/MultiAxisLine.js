@@ -12,6 +12,54 @@ export default function Line() {
     const [info, setInfo] = useState();
     const [chunkSize, setChunkSize] = React.useState(10);
 
+    const getAvg = () => {
+        let cache = new Map();
+
+        const getAvg = (chunkSize, result, timeInterval, data) => {
+            if (cache.has(chunkSize)) {
+                return cache.get(chunkSize)
+            }
+            else {
+                const val = calculateAvg(chunkSize, result, timeInterval, data);
+                cache.set(chunkSize, val);
+                return chunkSize;
+            }
+        }
+
+        const calculateAvg = (chunkSize, result, timeInterval, data) => {
+            let newValue = [];
+            let i, j, temparray, chunk = chunkSize;
+            const list = Object.entries(data);
+
+            for (i = 0, j = Object.keys(data).length; i < j; i += chunk) {///// i= 1 !!! to ignore 00:00 result
+                temparray = list.slice(i, i + chunk);
+                // do whatever
+
+                let averageDate = (Number(temparray[temparray.length - 1][0]) + Number(temparray[0][0])) / 2 + 0.5;
+                averageDate = averageDate % 1 == 0.5 ? averageDate : averageDate + 0.5;
+
+                let averageArray = [];
+                for (let k = 0; k < result.length; k++) {
+                    const average = temparray.reduce((prev, crnt) => prev + Number(crnt[1][k]), 0) / temparray.length;
+                    averageArray.push(average);
+                }
+                newValue[averageDate] = averageArray;
+            }
+            data = newValue;
+
+            for (const timeStamp in data) {
+                const time = Number(timeStamp) * timeInterval;
+                for (let j = 0; j < result.length; j++) {
+                    result[j].data.push({ primary: time, secondary: data[timeStamp][j] });
+                }
+            }
+
+            return result;
+        }
+    }
+
+    const getAverage = getAvg();
+
     useEffect(() => {
         async function fetchData() {
             const res = await fetch("/API");
@@ -59,35 +107,8 @@ export default function Line() {
     useEffect(() => {
         if (!dataSource) return;
         let { result, timeInterval, data } = JSON.parse(JSON.stringify(dataSource));
-        let newValue = [];
-        let i, j, temparray, chunk = chunkSize;
-        const list = Object.entries(data);
 
-        for (i = 0, j = Object.keys(data).length; i < j; i += chunk) {///// i= 1 !!! to ignore 00:00 result
-            temparray = list.slice(i, i + chunk);
-            // do whatever
-
-            let averageDate = (Number(temparray[temparray.length - 1][0]) + Number(temparray[0][0])) / 2 + 0.5;
-            averageDate = averageDate % 1 == 0.5 ? averageDate : averageDate + 0.5;
-
-            let averageArray = [];
-            for (let k = 0; k < result.length; k++) {
-                const average = temparray.reduce((prev, crnt) => prev + Number(crnt[1][k]), 0) / temparray.length;
-                averageArray.push(average);
-            }
-            newValue[averageDate] = averageArray;
-
-        }
-
-        data = newValue;
-
-        for (const timeStamp in data) {
-            const time = Number(timeStamp) * timeInterval;
-            for (let j = 0; j < result.length; j++) {
-                result[j].data.push({ primary: time, secondary: data[timeStamp][j] });
-            }
-        }
-        setDataAvg(result);
+        setDataAvg(getAverage.getAvg(chunkSize, result, timeInterval, data));
 
     }, [chunkSize, dataSource]);
 
