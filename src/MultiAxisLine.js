@@ -17,8 +17,10 @@ export default function Line() {
             const res = await fetch("/API");
             if (res.ok) {
                 res.json().then(res => {
+                    setDataSource(JSON.parse(JSON.stringify(res)));
+
                     let { result, timeInterval, data } = res;
-                    setDataSource(res);
+
 
                     for (const timeStamp in data) {
                         const time = Number(timeStamp) * timeInterval;
