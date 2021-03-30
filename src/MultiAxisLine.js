@@ -67,6 +67,7 @@ export default function Line() {
             temparray = list.slice(i, i + chunk);
             // do whatever
             if (temparray.length > 1) {
+                console.log(temparray);
                 const averageDate = (Number(temparray[temparray.length - 1][0]) + Number(temparray[0][0])) / 2 + 0.5;
                 let averageArray = [];
                 for (let k = 0; k < result.length; k++) {
