@@ -16,10 +16,13 @@ export default function Line() {
         let cache = new Map();
 
         const getAvg = (chunkSize, result, timeInterval, data) => {
+
             if (cache.has(chunkSize)) {
+                console.log("Cached");
                 return cache.get(chunkSize)
             }
             else {
+                console.log("Caclulated");
                 const val = calculateAvg(chunkSize, result, timeInterval, data);
                 cache.set(chunkSize, val);
                 return chunkSize;
@@ -106,10 +109,11 @@ export default function Line() {
 
     useEffect(() => {
         if (!dataSource) return;
+        if (!getAverage) return;
         let { result, timeInterval, data } = JSON.parse(JSON.stringify(dataSource));
-
+        const startime = new Date();
         setDataAvg(getAverage.getAvg(chunkSize, result, timeInterval, data));
-
+        console.log(new Date() - startime);
     }, [chunkSize, dataSource]);
 
     const series = React.useMemo(
