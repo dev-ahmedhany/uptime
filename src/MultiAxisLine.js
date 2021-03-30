@@ -30,16 +30,20 @@ export default function Line() {
                     result = JSON.parse(Scheme);
                     let newValue = [];
                     let i, j, temparray, chunk = 5;
+                    const list = Object.entries(data);
+
                     for (i = 0, j = Object.keys(data).length; i < j; i += chunk) {///// i= 1 !!! to ignore 00:00 result
-                        temparray = Object.entries(data).slice(i, i + chunk);
+                        temparray = list.slice(i, i + chunk);
                         // do whatever
-                        const averageDate = (Number(temparray[temparray.length - 1][0]) + Number(temparray[0][0])) / 2 + 0.5;
-                        let averageArray = [];
-                        for (let k = 0; k < result.length; k++) {
-                            const average = temparray.reduce((prev, crnt) => prev + Number(crnt[1][k]), 0) / temparray.length;
-                            averageArray.push(average);
+                        if (temparray.length > 1) {
+                            const averageDate = (Number(temparray[temparray.length - 1][0]) + Number(temparray[0][0])) / 2 + 0.5;
+                            let averageArray = [];
+                            for (let k = 0; k < result.length; k++) {
+                                const average = temparray.reduce((prev, crnt) => prev + Number(crnt[1][k]), 0) / temparray.length;
+                                averageArray.push(average);
+                            }
+                            newValue[averageDate] = averageArray;
                         }
-                        newValue[averageDate] = averageArray;
                     }
 
                     data = newValue;
