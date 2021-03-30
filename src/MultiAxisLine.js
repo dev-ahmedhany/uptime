@@ -47,8 +47,6 @@ const getAvgFunction = function (chunkSize, dataSource) {
     }
     else {
         console.log("Caclulated");
-        console.log(chunkSize);
-        console.log(dataSource);
         const val = calculateAvg(chunkSize, dataSource);
         cache.set(chunkSize, val);
         return val;
@@ -115,7 +113,7 @@ export default function Line() {
         if (!getAvgFunction) return;
         const startime = new Date();
         setDataAvg(getAvgFunction(chunkSize, JSON.stringify(dataSource)));
-        console.log(new Date() - startime);
+        console.log((new Date()).getTime() - startime.getTime());
     }, [chunkSize, dataSource]);
 
     const series = React.useMemo(
