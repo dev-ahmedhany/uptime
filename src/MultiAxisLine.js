@@ -5,11 +5,8 @@ import { Resizable } from "re-resizable";
 import Slider from '@material-ui/core/Slider';
 
 
-let cache = new Map();
-
-const calculateAvg = function (chunkSize, dataSource) {
+const getAvgFunction = function (chunkSize, dataSource) {
     let { result, timeInterval, data } = JSON.parse(dataSource);
-    console.log(chunkSize, result, timeInterval, data)
     let newValue = [];
     let i, j, temparray, chunk = chunkSize;
     const list = Object.entries(data);
@@ -39,20 +36,6 @@ const calculateAvg = function (chunkSize, dataSource) {
 
     return result;
 }
-
-const getAvgFunction = function (chunkSize, dataSource) {
-    if (cache.has(chunkSize)) {
-        console.log("Cached");
-        return cache.get(chunkSize)
-    }
-    else {
-        console.log("Caclulated");
-        const val = calculateAvg(chunkSize, dataSource);
-        cache.set(chunkSize, val);
-        return val;
-    }
-}
-
 
 
 export default function Line() {
