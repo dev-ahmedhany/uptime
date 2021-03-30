@@ -79,6 +79,8 @@ export default function Line() {
 
         data = newValue;
 
+        console.log(data);
+
         for (const timeStamp in data) {
             const time = Number(timeStamp) * timeInterval;
             for (let j = 0; j < result.length; j++) {
@@ -113,7 +115,7 @@ export default function Line() {
             <Resizable id="resizable" defaultSize={{ width: "90vw", height: "45vw", }}>
                 <Chart data={dataAvg} series={series} axes={axes} tooltip dark />
             </Resizable>
-            <Slider value={chunkSize} onChange={handleChange} aria-labelledby="continuous-slider" />
+            <Slider min={2} max={100} value={chunkSize} onChange={handleChange} aria-labelledby="continuous-slider" />
             {info}
         </>
     )
