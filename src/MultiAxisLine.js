@@ -10,7 +10,9 @@ export default function Line() {
     const getAvg = () => {
         let cache = new Map();
 
-        const calculateAvg = (chunkSize, result, timeInterval, data) => {
+        const calculateAvg = (chunkSize, dataSource) => {
+            let { result, timeInterval, data } = JSON.parse(JSON.stringify(dataSource));
+            console.log(chunkSize, result, timeInterval, data)
             let newValue = [];
             let i, j, temparray, chunk = chunkSize;
             const list = Object.entries(data);
@@ -41,15 +43,14 @@ export default function Line() {
             return result;
         }
 
-        return (chunkSize, result, timeInterval, data) => {
-
+        return (chunkSize, dataSource) => {
             if (cache.has(chunkSize)) {
                 console.log("Cached");
                 return cache.get(chunkSize)
             }
             else {
                 console.log("Caclulated");
-                const val = calculateAvg(chunkSize, result, timeInterval, data);
+                const val = calculateAvg(chunkSize, dataSource);
                 cache.set(chunkSize, val);
                 return chunkSize;
             }
@@ -111,10 +112,9 @@ export default function Line() {
 
     useEffect(() => {
         if (!dataSource) return;
-        if (!getAvg) return;
-        let { result, timeInterval, data } = JSON.parse(JSON.stringify(dataSource));
+        if (!getAvgFunction) return;
         const startime = new Date();
-        setDataAvg(getAvgFunction(chunkSize, result, timeInterval, data));
+        setDataAvg(getAvgFunction(chunkSize, dataSource));
         console.log(new Date() - startime);
     }, [chunkSize, dataSource]);
 
@@ -142,7 +142,7 @@ export default function Line() {
             <Resizable id="resizable" defaultSize={{ width: "90vw", height: "45vw", }}>
                 <Chart data={dataAvg} series={series} axes={axes} tooltip dark />
             </Resizable>
-            <Slider min={2} max={100} value={chunkSize} onChange={handleChange} valueLabelDisplay="on" width="50vw"
+            <Slider min={2} max={100} value={chunkSize} onChange={handleChange} valueLabelDisplay="auto" width="50vw"
                 marks={[{ value: 5, label: '10 min', }, { value: 15, label: '30 min', }, { value: 30, label: '1 hour', },
                 { value: 90, label: '3 hour', },]} aria-labelledby="continuous-slider" />
             {info}
