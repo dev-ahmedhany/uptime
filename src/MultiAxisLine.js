@@ -4,63 +4,65 @@ import { Chart } from 'react-charts'
 import { Resizable } from "re-resizable";
 import Slider from '@material-ui/core/Slider';
 
-const getAvg = () => {
-    let cache = new Map();
 
-    const calculateAvg = (chunkSize, result, timeInterval, data) => {
-        let newValue = [];
-        let i, j, temparray, chunk = chunkSize;
-        const list = Object.entries(data);
-
-        for (i = 0, j = Object.keys(data).length; i < j; i += chunk) {///// i= 1 !!! to ignore 00:00 result
-            temparray = list.slice(i, i + chunk);
-            // do whatever
-
-            let averageDate = (Number(temparray[temparray.length - 1][0]) + Number(temparray[0][0])) / 2 + 0.5;
-            averageDate = averageDate % 1 == 0.5 ? averageDate : averageDate + 0.5;
-
-            let averageArray = [];
-            for (let k = 0; k < result.length; k++) {
-                const average = temparray.reduce((prev, crnt) => prev + Number(crnt[1][k]), 0) / temparray.length;
-                averageArray.push(average);
-            }
-            newValue[averageDate] = averageArray;
-        }
-        data = newValue;
-
-        for (const timeStamp in data) {
-            const time = Number(timeStamp) * timeInterval;
-            for (let j = 0; j < result.length; j++) {
-                result[j].data.push({ primary: time, secondary: data[timeStamp][j] });
-            }
-        }
-
-        return result;
-    }
-
-    return (chunkSize, result, timeInterval, data) => {
-
-        if (cache.has(chunkSize)) {
-            console.log("Cached");
-            return cache.get(chunkSize)
-        }
-        else {
-            console.log("Caclulated");
-            const val = calculateAvg(chunkSize, result, timeInterval, data);
-            cache.set(chunkSize, val);
-            return chunkSize;
-        }
-    }
-
-}
 
 export default function Line() {
+    const getAvg = () => {
+        let cache = new Map();
+
+        const calculateAvg = (chunkSize, result, timeInterval, data) => {
+            let newValue = [];
+            let i, j, temparray, chunk = chunkSize;
+            const list = Object.entries(data);
+
+            for (i = 0, j = Object.keys(data).length; i < j; i += chunk) {///// i= 1 !!! to ignore 00:00 result
+                temparray = list.slice(i, i + chunk);
+                // do whatever
+
+                let averageDate = (Number(temparray[temparray.length - 1][0]) + Number(temparray[0][0])) / 2 + 0.5;
+                averageDate = averageDate % 1 == 0.5 ? averageDate : averageDate + 0.5;
+
+                let averageArray = [];
+                for (let k = 0; k < result.length; k++) {
+                    const average = temparray.reduce((prev, crnt) => prev + Number(crnt[1][k]), 0) / temparray.length;
+                    averageArray.push(average);
+                }
+                newValue[averageDate] = averageArray;
+            }
+            data = newValue;
+
+            for (const timeStamp in data) {
+                const time = Number(timeStamp) * timeInterval;
+                for (let j = 0; j < result.length; j++) {
+                    result[j].data.push({ primary: time, secondary: data[timeStamp][j] });
+                }
+            }
+
+            return result;
+        }
+
+        return (chunkSize, result, timeInterval, data) => {
+
+            if (cache.has(chunkSize)) {
+                console.log("Cached");
+                return cache.get(chunkSize)
+            }
+            else {
+                console.log("Caclulated");
+                const val = calculateAvg(chunkSize, result, timeInterval, data);
+                cache.set(chunkSize, val);
+                return chunkSize;
+            }
+        }
+
+    }
+
     // series array
     const [data, setData] = useState([{ "label": "Google", "data": [{ "primary": 1616913960000, "secondary": 63 }, { "primary": 1616914080000, "secondary": 51 }, { "primary": 1616914200000, "secondary": 54 }, { "primary": 1616914320000, "secondary": 53 },] }]);
     const [dataSource, setDataSource] = useState();
     const [dataAvg, setDataAvg] = useState([{ "label": "Google", "data": [{ "primary": 1616913960000, "secondary": 63 }, { "primary": 1616914080000, "secondary": 51 }, { "primary": 1616914200000, "secondary": 54 }, { "primary": 1616914320000, "secondary": 53 },] }]);
     const [info, setInfo] = useState();
-    const [getAvg] = useState(getAvg());
+    const [getAvgFunction] = useState(getAvg());
     const [chunkSize, setChunkSize] = React.useState(10);
 
     useEffect(() => {
@@ -112,7 +114,7 @@ export default function Line() {
         if (!getAvg) return;
         let { result, timeInterval, data } = JSON.parse(JSON.stringify(dataSource));
         const startime = new Date();
-        setDataAvg(getAvg(chunkSize, result, timeInterval, data));
+        setDataAvg(getAvgFunction(chunkSize, result, timeInterval, data));
         console.log(new Date() - startime);
     }, [chunkSize, dataSource]);
 
