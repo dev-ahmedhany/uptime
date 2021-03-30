@@ -21,7 +21,6 @@ export default function Line() {
 
                     let { result, timeInterval, data } = res;
 
-
                     for (const timeStamp in data) {
                         const time = Number(timeStamp) * timeInterval;
                         for (let j = 0; j < result.length; j++) {
@@ -59,7 +58,7 @@ export default function Line() {
 
     useEffect(() => {
         if (!dataSource) return;
-        let { result, timeInterval, data } = dataSource;
+        let { result, timeInterval, data } = JSON.parse(JSON.stringify(dataSource));
         let newValue = [];
         let i, j, temparray, chunk = chunkSize;
         const list = Object.entries(data);
