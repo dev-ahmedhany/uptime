@@ -17,7 +17,7 @@ const getAvgFunction = function (chunkSize, dataSource) {
 
         let averageDate = (Number(temparray[temparray.length - 1][0]) + Number(temparray[0][0])) / 2 + 0.5;
         averageDate = averageDate % 1 === 0.5 ? averageDate : averageDate + 0.5;
-        averageDate = (chunk % 2 == 0) ? averageDate - 0.5 : averageDate;
+        averageDate = (chunk % 2 === 0) ? averageDate - 0.5 : averageDate;
 
         let averageArray = [];
         for (let k = 0; k < result.length; k++) {

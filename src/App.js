@@ -6,8 +6,8 @@ function App() {
     <div className="App">
       <p>
         Cloudflare <code>Worker</code> uptime monitor<br />
-          and status page made with 💚 by Ahmed Hany
-        </p>
+          and status page made with 💖 by <a style={{ color: "white" }} href="https://github.com/dev-ahmedhany">Ahmed Hany</a>
+      </p>
       <MultiAxisLine />
       <br />
       <a

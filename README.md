@@ -2,13 +2,15 @@
 
 <!--start: description-->
 
-**uptime** is the open-source uptime monitor and status page, powered entirely by Cloudflare Worker. It's made with 💚 by [Ahmed Hany](https://github.com/dev-ahmedhany).
+**uptime** monitor and status page, powered by Cloudflare Worker. It's made with 💖 by [Ahmed Hany](https://github.com/dev-ahmedhany).
 
 <!--end: description-->
 
+## 💝 live DEMO
+
+[Aswan University monitor](https://uptime.aswu.workers.dev/).
 
 <!--start: docs-->
-
 
 ## ⭐ How it works
 
@@ -16,26 +18,13 @@
   - Every 2 minutes, a Worker visits your website to make sure it's up
   - Response time is recorded every visit and saved to KV
   - Graphs of response time are generated every visit
-- TODO: GitHub Issues are used for incident reports
-  - An issue is opened if an endpoint is down
-  - People from your team are assigned to the issue
-  - Incidents reports are posted as issue comments
-  - Issues are locked so non-members cannot comment on them
-  - Issues are closed automatically when your site comes back up
-  - Slack notifications are sent on updates
 - GitHub Files are used for the status website
-  - A simple, beautiful, and accessible react page is generated
+  - A simple, beautiful, and accessible react page
   - Fetches data from The Same Worker
-
-_uptime is not affiliated to or endorsed by GitHub._
-
-
-## 💝 live DEMO
-
-[Aswan University monitor](https://theuptime.siteuptime.workers.dev/).
 
 ## 👩‍💻 Documentation
 
+TODO
 
 <!--end: docs-->
 
