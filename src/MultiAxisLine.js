@@ -7,20 +7,6 @@ import Slider from '@material-ui/core/Slider';
 const getAvg = () => {
     let cache = new Map();
 
-    const getAvg = (chunkSize, result, timeInterval, data) => {
-
-        if (cache.has(chunkSize)) {
-            console.log("Cached");
-            return cache.get(chunkSize)
-        }
-        else {
-            console.log("Caclulated");
-            const val = calculateAvg(chunkSize, result, timeInterval, data);
-            cache.set(chunkSize, val);
-            return chunkSize;
-        }
-    }
-
     const calculateAvg = (chunkSize, result, timeInterval, data) => {
         let newValue = [];
         let i, j, temparray, chunk = chunkSize;
@@ -51,9 +37,22 @@ const getAvg = () => {
 
         return result;
     }
-}
 
-const getAverage = getAvg();
+    return (chunkSize, result, timeInterval, data) => {
+
+        if (cache.has(chunkSize)) {
+            console.log("Cached");
+            return cache.get(chunkSize)
+        }
+        else {
+            console.log("Caclulated");
+            const val = calculateAvg(chunkSize, result, timeInterval, data);
+            cache.set(chunkSize, val);
+            return chunkSize;
+        }
+    }
+
+}
 
 export default function Line() {
     // series array
@@ -61,6 +60,7 @@ export default function Line() {
     const [dataSource, setDataSource] = useState();
     const [dataAvg, setDataAvg] = useState([{ "label": "Google", "data": [{ "primary": 1616913960000, "secondary": 63 }, { "primary": 1616914080000, "secondary": 51 }, { "primary": 1616914200000, "secondary": 54 }, { "primary": 1616914320000, "secondary": 53 },] }]);
     const [info, setInfo] = useState();
+    const [getAvg] = useState(getAvg());
     const [chunkSize, setChunkSize] = React.useState(10);
 
     useEffect(() => {
@@ -109,10 +109,10 @@ export default function Line() {
 
     useEffect(() => {
         if (!dataSource) return;
-        if (!getAverage) return;
+        if (!getAvg) return;
         let { result, timeInterval, data } = JSON.parse(JSON.stringify(dataSource));
         const startime = new Date();
-        setDataAvg(getAverage.getAvg(chunkSize, result, timeInterval, data));
+        setDataAvg(getAvg(chunkSize, result, timeInterval, data));
         console.log(new Date() - startime);
     }, [chunkSize, dataSource]);
 
@@ -140,7 +140,9 @@ export default function Line() {
             <Resizable id="resizable" defaultSize={{ width: "90vw", height: "45vw", }}>
                 <Chart data={dataAvg} series={series} axes={axes} tooltip dark />
             </Resizable>
-            <Slider min={2} max={100} value={chunkSize} onChange={handleChange} aria-labelledby="continuous-slider" />
+            <Slider min={2} max={100} value={chunkSize} onChange={handleChange} valueLabelDisplay="on" width="50vw"
+                marks={[{ value: 5, label: '10 min', }, { value: 15, label: '30 min', }, { value: 30, label: '1 hour', },
+                { value: 90, label: '3 hour', },]} aria-labelledby="continuous-slider" />
             {info}
         </>
     )
