@@ -27,7 +27,7 @@ function App() {
       <CssBaseline />
       <div className="App">
         <br />
-        <Typography variant="h5" component="h1" style={{ textAlign: "center" }}>
+        <Typography variant="h6" component="h1" style={{ textAlign: "center" }}>
           uptime monitor and status page made <br /> with 💖 by <a
             style={{ color: "inherit" }} href="https://github.com/dev-ahmedhany"
           >Ahmed Hany</a> and Powered By:
