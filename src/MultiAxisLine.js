@@ -94,9 +94,7 @@ export default function Line() {
     useEffect(() => {
         if (!dataSource) return;
         if (!getAvgFunction) return;
-        const startime = new Date();
         setDataAvg(getAvgFunction(chunkSize, JSON.stringify(dataSource)));
-        console.log((new Date()).getTime() - startime.getTime());
     }, [chunkSize, dataSource]);
 
     const series = React.useMemo(
@@ -123,9 +121,9 @@ export default function Line() {
             <Resizable id="resizable" defaultSize={{ width: "90vw", height: "45vw", }}>
                 <Chart data={dataAvg} series={series} axes={axes} tooltip dark />
             </Resizable>
-            <Slider min={2} max={100} value={chunkSize} onChange={handleChange} style={{ width: "50vw" }} valueLabelDisplay="auto"
+            <Slider min={2} max={360} value={chunkSize} onChange={handleChange} style={{ width: "50vw" }} valueLabelDisplay="auto"
                 marks={[{ value: 5, label: '10 min', }, { value: 15, label: '30 min', }, { value: 30, label: '1 hour', },
-                { value: 90, label: '3 hour', },]} aria-labelledby="continuous-slider" />
+                { value: 90, label: '3 hour', }, { value: 360, label: '12 hour', }]} aria-labelledby="continuous-slider" />
             {info}
         </>
     )
