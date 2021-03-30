@@ -11,7 +11,7 @@ export default function Line() {
         let cache = new Map();
 
         const calculateAvg = function (chunkSize, dataSource) {
-            let { result, timeInterval, data } = JSON.parse(JSON.stringify(dataSource));
+            let { result, timeInterval, data } = JSON.parse(dataSource);
             console.log(chunkSize, result, timeInterval, data)
             let newValue = [];
             let i, j, temparray, chunk = chunkSize;
@@ -50,6 +50,7 @@ export default function Line() {
             }
             else {
                 console.log("Caclulated");
+                console.log(chunkSize);
                 console.log(dataSource);
                 const val = calculateAvg(chunkSize, dataSource);
                 cache.set(chunkSize, val);
@@ -115,7 +116,7 @@ export default function Line() {
         if (!dataSource) return;
         if (!getAvgFunction) return;
         const startime = new Date();
-        setDataAvg(getAvgFunction(chunkSize, dataSource));
+        setDataAvg(getAvgFunction(chunkSize, JSON.stringify(dataSource)));
         console.log(new Date() - startime);
     }, [chunkSize, dataSource]);
 
