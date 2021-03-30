@@ -122,8 +122,8 @@ export default function Line() {
                 <Chart data={dataAvg} series={series} axes={axes} tooltip dark />
             </Resizable>
             <Slider min={2} max={360} value={chunkSize} onChange={handleChange} style={{ width: "50vw" }} valueLabelDisplay="auto"
-                marks={[{ value: 5, label: '10 min', }, { value: 15, label: '30 min', }, { value: 30, label: '1 hour', },
-                { value: 90, label: '3 hour', }, { value: 360, label: '12 hour', }]} aria-labelledby="continuous-slider" />
+                marks={[{ value: 2, label: '2 min', }, { value: 90, label: '3 hour', }, { value: 180, label: '6 hour', },
+                { value: 270, label: '9 hour', }, { value: 360, label: '12 hour', }]} aria-labelledby="continuous-slider" />
             {info}
         </>
     )
