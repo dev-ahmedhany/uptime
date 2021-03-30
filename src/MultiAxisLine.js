@@ -118,14 +118,17 @@ export default function Line() {
                 <Chart data={data} series={series} axes={axes} tooltip dark />
             </Resizable>
             <br />
-            <h2>Average</h2>
+            <p>Average</p>
+            <Slider min={2} max={180} value={chunkSize} onChange={handleChange}
+                style={{ width: "50vw" }} valueLabelDisplay="auto"
+                marks={[{ value: 2, label: '4 minutes', }, { value: 90, label: '3 hours', },
+                { value: 180, label: '6 hours', }]} aria-labelledby="continuous-slider" />
             <br />
             <Resizable id="resizable2" defaultSize={{ width: "90vw", height: "45vw", }}>
                 <Chart data={dataAvg} series={series} axes={axes} tooltip dark />
             </Resizable>
-            <Slider min={2} max={360} value={chunkSize} onChange={handleChange} style={{ width: "50vw" }} valueLabelDisplay="auto"
-                marks={[{ value: 2, label: '2 min', }, { value: 90, label: '3 hour', }, { value: 180, label: '6 hour', },
-                { value: 270, label: '9 hour', }, { value: 360, label: '12 hour', }]} aria-labelledby="continuous-slider" />
+            <br />
+
             {info}
         </>
     )
