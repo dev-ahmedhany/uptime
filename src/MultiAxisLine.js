@@ -60,9 +60,7 @@ export default function Line() {
                     for (const timeStamp in data) {
                         const time = Number(timeStamp) * timeInterval;
                         for (let j = 0; j < result.length; j++) {
-                            //for old version : remove this line later
-                            const sec = data[timeStamp][j] < 1 ? 100000 + data[timeStamp][j] : data[timeStamp][j]
-                            result[j].data.push({ primary: time, secondary: sec });
+                            result[j].data.push({ primary: time, secondary: data[timeStamp][j] });
                         }
                     }
 
