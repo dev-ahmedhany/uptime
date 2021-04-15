@@ -48,28 +48,32 @@ export default function Line() {
     const [info, setInfo] = useState();
     const [chunkSize, setChunkSize] = React.useState(10);
 
+
+    
     useEffect(() => {
-        async function fetchData() {
-            const res = await fetch("/API");
-            if (res.ok) {
-                res.json().then(res => {
-                    setDataSource(JSON.parse(JSON.stringify(res)));
-
-                    let { result, timeInterval, data } = res;
-
-                    for (const timeStamp in data) {
-                        const time = Number(timeStamp) * timeInterval;
-                        for (let j = 0; j < result.length; j++) {
-                            result[j].data.push({ primary: time, secondary: data[timeStamp][j] });
-                        }
-                    }
-
-                    setData(result);
-                    document.getElementById("resizable").style = "position: relative; user-select: auto; width: 91vw; height: 45vw; box-sizing: border-box; flex-shrink: 0;";
-                });
-            }
+        const fetchData = async () => {
+            const res = await fetch('/API')
+            return res.ok && await res.json()
         }
-        fetchData();
+        fetchData().then(res => {
+            if(!res) return;
+            
+            setDataSource(JSON.parse(JSON.stringify(res)));
+
+            let { result, timeInterval, data } = res;
+
+            for (const timeStamp in data) {
+                const time = Number(timeStamp) * timeInterval;
+                for (let j = 0; j < result.length; j++) {
+                    result[j].data.push({ primary: time, secondary: data[timeStamp][j] });
+                }
+            }
+
+            setData(result);
+            document.getElementById("resizable").style = `position: relative; user-select: auto;
+                width: 91vw; height: 45vw; box-sizing: border-box; flex-shrink: 0;`;
+            
+        });
 
     }, []);
 
