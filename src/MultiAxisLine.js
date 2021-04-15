@@ -60,7 +60,9 @@ export default function Line() {
                     for (const timeStamp in data) {
                         const time = Number(timeStamp) * timeInterval;
                         for (let j = 0; j < result.length; j++) {
-                            result[j].data.push({ primary: time, secondary: data[timeStamp][j] });
+                            //for old version : remove this line later
+                            const sec = data[timeStamp][j] < 1 ? 100000 + data[timeStamp][j] : data[timeStamp][j]
+                            result[j].data.push({ primary: time, secondary: sec });
                         }
                     }
 
@@ -79,9 +81,9 @@ export default function Line() {
             const element = data[i];
             for (let j = 0; j < element.data.length; j++) {
                 const item = element.data[j];
-                if (item.secondary < 1) {
+                if (item.secondary > 100000) {
                     const date = new Date(item.primary);
-                    items.push(<li key={j}>{`${element.label}\t${date.toLocaleDateString("en-US")}\t${date.toLocaleTimeString("en-US")}\tError Code:${Number(item.secondary) * 1000}`}</li>)
+                    items.push(<li key={j}>{`${element.label}\t${date.toLocaleDateString("en-US")}\t${date.toLocaleTimeString("en-US")}\tError Code:${(100000 - Number(item.secondary)) * 1000}`}</li>)
                 }
             }
         }
