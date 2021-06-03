@@ -7,12 +7,11 @@ import { CircularProgress, Typography } from '@material-ui/core';
 
 export default function Line() {
     // series array
-    const [data, setData] = useState();
     const [isDataAvalible, setIsDataAvalible] = useState(false);
     const [dataSource, setDataSource] = useState();
     const [dataAvg, setDataAvg] = useState();
     const [info, setInfo] = useState([]);
-    const [chunkSize, setChunkSize] = React.useState(10);
+    const [chunkSize, setChunkSize] = React.useState(15);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -64,37 +63,31 @@ export default function Line() {
     }, []);
 
     useEffect(() => {
-        if (!data) return;
+        if (!dataAvg) return;
         setIsDataAvalible(true);
-    }, [data]);
+    }, [dataAvg]);
 
     useEffect(() => {
         if (!dataSource) return;
 
         const { result, timeInterval, data } = dataSource;
-        let finalResult = JSON.parse(JSON.stringify(result))
+        //let finalResult = JSON.parse(JSON.stringify(result))
         let errorList = [];
 
         for (const timeStamp in data) {
             const time = Number(timeStamp) * timeInterval;
             for (let i = 0; i < result.length; i++) {
 
-                if (data[timeStamp][i]) {
-
-                    finalResult[i].data.push({ primary: time, secondary: data[timeStamp][i] });
-
-                    if (data[timeStamp][i] > 100000) {
-                        errorList.push({
-                            name: result[i].label,
-                            time: (new Date(time)).toLocaleTimeString("en-US", { hour: '2-digit', minute: '2-digit' }),
-                            code: parseInt(Math.abs((100000 - Number(data[timeStamp][i])) * 1000))
-                        })
-                    }
+                if (data[timeStamp][i] && data[timeStamp][i] > 100000) {
+                    errorList.push({
+                        name: result[i].label,
+                        time: (new Date(time)).toLocaleTimeString("en-US", { hour: '2-digit', minute: '2-digit' }),
+                        code: parseInt(Math.abs((100000 - Number(data[timeStamp][i])) * 1000))
+                    })
                 }
             }
         }
 
-        setData(finalResult);
         setInfo(errorList);
 
     }, [dataSource]);
@@ -113,17 +106,14 @@ export default function Line() {
         <>
             {isDataAvalible ?
                 <>
-                    <Resizable id="resizable" defaultSize={{ width: "90vw", height: "45vw", }}>
-                        <Chart data={data} series={series} axes={axes} tooltip dark />
-                    </Resizable>
                     <br />
                     <p>Average</p>
-                    <Slider min={2} max={180} value={chunkSize} onChange={handleChange}
+                    <Slider min={1} max={180} value={chunkSize} onChange={handleChange}
                         style={{ width: "50vw" }} valueLabelDisplay="auto"
-                        marks={[{ value: 2, label: '4 minutes', }, { value: 90, label: '3 hours', },
+                        marks={[{ value: 2, label: '2 minutes', }, { value: 90, label: '3 hours', },
                         { value: 180, label: '6 hours', }]} aria-labelledby="continuous-slider" />
                     <br />
-                    <Resizable id="resizable2" defaultSize={{ width: "90vw", height: "45vw", }}>
+                    <Resizable defaultSize={{ width: "90vw", height: "45vw", }}>
                         <Chart data={dataAvg} series={series} axes={axes} tooltip dark />
                     </Resizable>
                     <br />
