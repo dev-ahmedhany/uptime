@@ -90,8 +90,6 @@ export default function Line() {
             }
             setInfo(items);
 
-            document.getElementById("resizable").style = `position: relative; user-select: auto;
-                width: 91vw; height: 45vw; box-sizing: border-box; flex-shrink: 0;`;
         });
 
     }, []);
@@ -104,7 +102,6 @@ export default function Line() {
         if (!dataSource) return;
         if (!getAvgFunction) return;
         setDataAvg(getAvgFunction(chunkSize, JSON.stringify(dataSource)));
-        document.getElementById("resizable2").style = "position: relative; user-select: auto; width: 91vw; height: 45vw; box-sizing: border-box; flex-shrink: 0;";
     }, [chunkSize, dataSource]);
 
     const series = React.useMemo(
