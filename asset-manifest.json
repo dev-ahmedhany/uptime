@@ -1,8 +1,8 @@
 {
   "files": {
     "main.css": "/uptime/static/css/main.84b3edf8.chunk.css",
-    "main.js": "/uptime/static/js/main.53dbc201.chunk.js",
-    "main.js.map": "/uptime/static/js/main.53dbc201.chunk.js.map",
+    "main.js": "/uptime/static/js/main.d6f033df.chunk.js",
+    "main.js.map": "/uptime/static/js/main.d6f033df.chunk.js.map",
     "runtime-main.js": "/uptime/static/js/runtime-main.5895e9b6.js",
     "runtime-main.js.map": "/uptime/static/js/runtime-main.5895e9b6.js.map",
     "static/css/2.b393811b.chunk.css": "/uptime/static/css/2.b393811b.chunk.css",
@@ -14,6 +14,7 @@
     "static/css/2.b393811b.chunk.css.map": "/uptime/static/css/2.b393811b.chunk.css.map",
     "static/css/main.84b3edf8.chunk.css.map": "/uptime/static/css/main.84b3edf8.chunk.css.map",
     "static/js/2.90ec73bd.chunk.js.LICENSE.txt": "/uptime/static/js/2.90ec73bd.chunk.js.LICENSE.txt",
+    "static/media/cloadflareWorkers.71e0e9df.svg": "/uptime/static/media/cloadflareWorkers.71e0e9df.svg",
     "static/media/index.css": "/uptime/static/media/roboto-vietnamese-400-normal.c0bec65d.woff2"
   },
   "entrypoints": [
@@ -21,6 +22,6 @@
     "static/css/2.b393811b.chunk.css",
     "static/js/2.90ec73bd.chunk.js",
     "static/css/main.84b3edf8.chunk.css",
-    "static/js/main.53dbc201.chunk.js"
+    "static/js/main.d6f033df.chunk.js"
   ]
 }
