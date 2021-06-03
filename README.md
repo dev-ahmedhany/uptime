@@ -8,7 +8,7 @@
 
 ## 💝 live DEMO
 
-[Aswan University monitor](https://uptime.aswu.workers.dev/).
+[Aswan University monitor](https://dev-ahmedhany.github.io/uptime/).
 
 <!--start: docs-->
 
@@ -24,7 +24,12 @@
 
 ## 👩‍💻 Documentation
 
-TODO
+### How To copy this For your sites
+- Clone the Project
+  - setup github pages
+  - Change homepage url at Package.json file to github pages url
+- create Cloudflare Worker
+  - change this url at the code https://uptime.aswu.workers.dev/API to yours
 
 <!--end: docs-->
 
