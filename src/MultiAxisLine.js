@@ -3,7 +3,7 @@ import { Chart } from 'react-charts'
 import { Resizable } from "re-resizable";
 import Slider from '@material-ui/core/Slider';
 import Details from './components/Details'
-import { Typography } from '@material-ui/core';
+import { CircularProgress, Typography } from '@material-ui/core';
 
 
 const getAvgFunction = function (chunkSize, dataSource) {
@@ -44,7 +44,7 @@ const getAvgFunction = function (chunkSize, dataSource) {
 export default function Line() {
 
     // series array
-    const [data, setData] = useState([{ "label": "Google", "data": [{ "primary": 1616913960000, "secondary": 63 }, { "primary": 1616914080000, "secondary": 51 }, { "primary": 1616914200000, "secondary": 54 }, { "primary": 1616914320000, "secondary": 53 },] }]);
+    const [data, setData] = useState();
     const [dataSource, setDataSource] = useState();
     const [dataAvg, setDataAvg] = useState([{ "label": "Google", "data": [{ "primary": 1616913960000, "secondary": 63 }, { "primary": 1616914080000, "secondary": 51 }, { "primary": 1616914200000, "secondary": 54 }, { "primary": 1616914320000, "secondary": 53 },] }]);
     const [info, setInfo] = useState([]);
@@ -72,29 +72,29 @@ export default function Line() {
             }
 
             setData(result);
+
+            //get error list
+            let items = [];
+            for (let i = 0; i < result.length; i++) {
+                const element = result[i];
+                items.push({ name: element.label, Data: [] })
+                for (let j = 0; j < element.data.length; j++) {
+                    const item = element.data[j];
+                    if (item.secondary > 100000) {
+                        items[i].Data.push({
+                            time: (new Date(item.primary)).toLocaleTimeString("en-US", { hour: '2-digit', minute: '2-digit' }),
+                            code: parseInt(Math.abs((100000 - Number(item.secondary)) * 1000))
+                        })
+                    }
+                }
+            }
+            setInfo(items);
+
             document.getElementById("resizable").style = `position: relative; user-select: auto;
                 width: 91vw; height: 45vw; box-sizing: border-box; flex-shrink: 0;`;
         });
 
     }, []);
-
-    useEffect(() => {
-        let items = [];
-        for (let i = 0; i < data.length; i++) {
-            const element = data[i];
-            items.push({ name: element.label, Data: [] })
-            for (let j = 0; j < element.data.length; j++) {
-                const item = element.data[j];
-                if (item.secondary > 100000) {
-                    items[i].Data.push({
-                        time: (new Date(item.primary)).toLocaleTimeString("en-US", { hour: '2-digit', minute: '2-digit' }),
-                        code: parseInt(Math.abs((100000 - Number(item.secondary)) * 1000))
-                    })
-                }
-            }
-        }
-        setInfo(items);
-    }, [data]);
 
     const handleChange = (event, newValue) => {
         setChunkSize(newValue);
@@ -122,22 +122,29 @@ export default function Line() {
     )
     return (
         <>
-            <Resizable id="resizable" defaultSize={{ width: "90vw", height: "45vw", }}>
-                <Chart data={data} series={series} axes={axes} tooltip dark />
-            </Resizable>
-            <br />
-            <p>Average</p>
-            <Slider min={2} max={180} value={chunkSize} onChange={handleChange}
-                style={{ width: "50vw" }} valueLabelDisplay="auto"
-                marks={[{ value: 2, label: '4 minutes', }, { value: 90, label: '3 hours', },
-                { value: 180, label: '6 hours', }]} aria-labelledby="continuous-slider" />
-            <br />
-            <Resizable id="resizable2" defaultSize={{ width: "90vw", height: "45vw", }}>
-                <Chart data={dataAvg} series={series} axes={axes} tooltip dark />
-            </Resizable>
-            <br />
-            <Typography>Error List</Typography>
-            <Details Data={info}></Details>
+            {data ?
+                <>
+                    <Resizable id="resizable" defaultSize={{ width: "90vw", height: "45vw", }}>
+                        <Chart data={data} series={series} axes={axes} tooltip dark />
+                    </Resizable>
+                    <br />
+                    <p>Average</p>
+                    <Slider min={2} max={180} value={chunkSize} onChange={handleChange}
+                        style={{ width: "50vw" }} valueLabelDisplay="auto"
+                        marks={[{ value: 2, label: '4 minutes', }, { value: 90, label: '3 hours', },
+                        { value: 180, label: '6 hours', }]} aria-labelledby="continuous-slider" />
+                    <br />
+                    <Resizable id="resizable2" defaultSize={{ width: "90vw", height: "45vw", }}>
+                        <Chart data={dataAvg} series={series} axes={axes} tooltip dark />
+                    </Resizable>
+                    <br />
+                    <Typography>Error List</Typography>
+                    <Details Data={info}></Details>
+                </> :
+                <>
+                    <CircularProgress />
+                </>
+            }
         </>
     )
 }
