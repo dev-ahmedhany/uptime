@@ -42,14 +42,13 @@ const getAvgFunction = function (chunkSize, dataSource) {
 
 
 export default function Line() {
-
     // series array
     const [data, setData] = useState();
     const [dataSource, setDataSource] = useState();
-    const [dataAvg, setDataAvg] = useState([{ "label": "Google", "data": [{ "primary": 1616913960000, "secondary": 63 }, { "primary": 1616914080000, "secondary": 51 }, { "primary": 1616914200000, "secondary": 54 }, { "primary": 1616914320000, "secondary": 53 },] }]);
+    const [dataAvg, setDataAvg] = useState();
     const [info, setInfo] = useState([]);
     const [chunkSize, setChunkSize] = React.useState(10);
-
+    console.log("rendered");
 
     useEffect(() => {
         const fetchData = async () => {
@@ -125,15 +124,22 @@ export default function Line() {
                         <Chart data={data} series={series} axes={axes} tooltip dark />
                     </Resizable>
                     <br />
-                    <p>Average</p>
-                    <Slider min={2} max={180} value={chunkSize} onChange={handleChange}
-                        style={{ width: "50vw" }} valueLabelDisplay="auto"
-                        marks={[{ value: 2, label: '4 minutes', }, { value: 90, label: '3 hours', },
-                        { value: 180, label: '6 hours', }]} aria-labelledby="continuous-slider" />
-                    <br />
-                    <Resizable id="resizable2" defaultSize={{ width: "90vw", height: "45vw", }}>
-                        <Chart data={dataAvg} series={series} axes={axes} tooltip dark />
-                    </Resizable>
+                    {dataAvg ?
+                        <>
+                            <p>Average</p>
+                            <Slider min={2} max={180} value={chunkSize} onChange={handleChange}
+                                style={{ width: "50vw" }} valueLabelDisplay="auto"
+                                marks={[{ value: 2, label: '4 minutes', }, { value: 90, label: '3 hours', },
+                                { value: 180, label: '6 hours', }]} aria-labelledby="continuous-slider" />
+                            <br />
+                            <Resizable id="resizable2" defaultSize={{ width: "90vw", height: "45vw", }}>
+                                <Chart data={dataAvg} series={series} axes={axes} tooltip dark />
+                            </Resizable>
+                        </> :
+                        <>
+                            <CircularProgress />
+                        </>}
+
                     <br />
                     <Typography>Error List</Typography>
                     <Details Data={info}></Details>
