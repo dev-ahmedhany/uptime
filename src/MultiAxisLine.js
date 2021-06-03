@@ -6,8 +6,8 @@ import Details from './components/Details'
 import { CircularProgress, Typography } from '@material-ui/core';
 
 
-const getAvgFunction = function (chunkSize, dataSource) {
-    let { result, timeInterval, data } = JSON.parse(dataSource);
+const getAvgFunction = function (chunkSize, result, timeInterval, data) {
+    let finalResult = JSON.parse(JSON.stringify(result))
     let newValue = [];
     let i, j, temparray, chunk = chunkSize;
     const list = Object.entries(data);
@@ -33,11 +33,11 @@ const getAvgFunction = function (chunkSize, dataSource) {
         const time = Number(timeStamp) * timeInterval;
         for (let j = 0; j < result.length; j++) {
             if (data[timeStamp][j])
-                result[j].data.push({ primary: time, secondary: data[timeStamp][j] });
+                finalResult[j].data.push({ primary: time, secondary: data[timeStamp][j] });
         }
     }
 
-    return result;
+    return finalResult;
 }
 
 
@@ -58,36 +58,34 @@ export default function Line() {
         fetchData().then(res => {
             if (!res) return;
 
-            setDataSource(JSON.parse(JSON.stringify(res)));
+            setDataSource(res);
 
-            let { result, timeInterval, data } = res;
+            const { result, timeInterval, data } = res;
+            let finalResult = JSON.parse(JSON.stringify(result))
+            let errorList = [];
 
             for (const timeStamp in data) {
                 const time = Number(timeStamp) * timeInterval;
-                for (let j = 0; j < result.length; j++) {
-                    if (data[timeStamp][j])
-                        result[j].data.push({ primary: time, secondary: data[timeStamp][j] });
-                }
-            }
+                for (let i = 0; i < result.length; i++) {
 
-            setData(result);
+                    errorList.push({ name: result[i].label, Data: [] })
 
-            //get error list
-            let items = [];
-            for (let i = 0; i < result.length; i++) {
-                const element = result[i];
-                items.push({ name: element.label, Data: [] })
-                for (let j = 0; j < element.data.length; j++) {
-                    const item = element.data[j];
-                    if (item.secondary > 100000) {
-                        items[i].Data.push({
-                            time: (new Date(item.primary)).toLocaleTimeString("en-US", { hour: '2-digit', minute: '2-digit' }),
-                            code: parseInt(Math.abs((100000 - Number(item.secondary)) * 1000))
-                        })
+                    if (data[timeStamp][i]) {
+
+                        finalResult[i].data.push({ primary: time, secondary: data[timeStamp][i] });
+
+                        if (data[timeStamp][i] > 100000) {
+                            errorList[i].Data.push({
+                                time: (new Date(time)).toLocaleTimeString("en-US", { hour: '2-digit', minute: '2-digit' }),
+                                code: parseInt(Math.abs((100000 - Number(data[timeStamp][i])) * 1000))
+                            })
+                        }
                     }
                 }
             }
-            setInfo(items);
+
+            setData(finalResult);
+            setInfo(errorList);
 
         });
 
@@ -100,7 +98,8 @@ export default function Line() {
     useEffect(() => {
         if (!dataSource) return;
         if (!getAvgFunction) return;
-        setDataAvg(getAvgFunction(chunkSize, JSON.stringify(dataSource)));
+        const { result, timeInterval, data } = dataSource;
+        setDataAvg(getAvgFunction(chunkSize, result, timeInterval, data));
     }, [chunkSize, dataSource]);
 
     const series = React.useMemo(
