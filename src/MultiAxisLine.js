@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react'
-//
 import { Chart } from 'react-charts'
 import { Resizable } from "re-resizable";
 import Slider from '@material-ui/core/Slider';
+import Details from './components/Details'
+import { Typography } from '@material-ui/core';
 
 
 const getAvgFunction = function (chunkSize, dataSource) {
@@ -46,7 +47,7 @@ export default function Line() {
     const [data, setData] = useState([{ "label": "Google", "data": [{ "primary": 1616913960000, "secondary": 63 }, { "primary": 1616914080000, "secondary": 51 }, { "primary": 1616914200000, "secondary": 54 }, { "primary": 1616914320000, "secondary": 53 },] }]);
     const [dataSource, setDataSource] = useState();
     const [dataAvg, setDataAvg] = useState([{ "label": "Google", "data": [{ "primary": 1616913960000, "secondary": 63 }, { "primary": 1616914080000, "secondary": 51 }, { "primary": 1616914200000, "secondary": 54 }, { "primary": 1616914320000, "secondary": 53 },] }]);
-    const [info, setInfo] = useState();
+    const [info, setInfo] = useState([]);
     const [chunkSize, setChunkSize] = React.useState(10);
 
 
@@ -81,15 +82,14 @@ export default function Line() {
         let items = [];
         for (let i = 0; i < data.length; i++) {
             const element = data[i];
+            items.push({ name: element.label, Data: [] })
             for (let j = 0; j < element.data.length; j++) {
                 const item = element.data[j];
                 if (item.secondary > 100000) {
-                    const date = new Date(item.primary);
-                    items.push(<li key={i + "n" + j}>
-                        {`${element.label}\t${date.toLocaleDateString("en-US")}
-                        \t${date.toLocaleTimeString("en-US")}
-                        \tError Code:${parseInt((100000 - Number(item.secondary)) * 1000)}`}
-                    </li>)
+                    items[i].Data.push({
+                        time: (new Date(item.primary)).toLocaleTimeString("en-US", { hour: '2-digit', minute: '2-digit' }),
+                        code: parseInt(Math.abs((100000 - Number(item.secondary)) * 1000))
+                    })
                 }
             }
         }
@@ -136,8 +136,8 @@ export default function Line() {
                 <Chart data={dataAvg} series={series} axes={axes} tooltip dark />
             </Resizable>
             <br />
-
-            {info}
+            <Typography>Error List</Typography>
+            <Details Data={info}></Details>
         </>
     )
 }
