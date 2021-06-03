@@ -74,9 +74,6 @@ export default function Line() {
         const { result, timeInterval, data } = dataSource;
         let finalResult = JSON.parse(JSON.stringify(result))
         let errorList = [];
-        for (let j = 0; j < result.length; j++) {
-            errorList.push({ name: result[j].label, Data: [] })
-        }
 
         for (const timeStamp in data) {
             const time = Number(timeStamp) * timeInterval;
@@ -87,7 +84,8 @@ export default function Line() {
                     finalResult[i].data.push({ primary: time, secondary: data[timeStamp][i] });
 
                     if (data[timeStamp][i] > 100000) {
-                        errorList[i].Data.push({
+                        errorList.push({
+                            name: result[i].label,
                             time: (new Date(time)).toLocaleTimeString("en-US", { hour: '2-digit', minute: '2-digit' }),
                             code: parseInt(Math.abs((100000 - Number(data[timeStamp][i])) * 1000))
                         })

@@ -8,3 +8,18 @@
 
   font-size: calc(10px + 2vmin);
 }
+
+.sticky {
+  position: sticky !important;
+  position: -webkit-sticky !important;
+  z-index: 2;
+}
+
+.row,
+.sticky {
+  display: flex;
+  align-items: center;
+  background-color: #333;
+  border-bottom: 1px solid #eee;
+  box-sizing: border-box;
+}

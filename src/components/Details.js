@@ -1,53 +1,48 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
-import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
-import ListSubheader from '@material-ui/core/ListSubheader';
+import { FixedSizeList } from 'react-window';
 
 const useStyles = makeStyles((theme) => ({
     root: {
         width: '100%',
-        maxWidth: '12em',
+        height: 400,
+        maxWidth: 300,
         backgroundColor: theme.palette.background.paper,
-        position: 'relative',
-        overflow: 'auto',
-        maxHeight: 300,
-    },
-    listSection: {
-        backgroundColor: 'inherit',
-    },
-    ul: {
-        backgroundColor: 'inherit',
-        padding: 0,
     },
 }));
 
-function Details({ Data }) {
-    const classes = useStyles();
+function renderRow({ data, index, style }) {
 
     return (
-        <List className={classes.root} subheader={<li />}>
-            {Data.map((sectionId, index) => (
-                <li key={`section-${index}`} className={classes.listSection}>
-                    <ul className={classes.ul}>
-                        <ListSubheader>{sectionId.name}</ListSubheader>
-                        {sectionId.Data.map((item, subIndex) => (
-                            <ListItem key={`item-${index}-${subIndex}`}>
-                                <ListItemText primary={`${item.time}`} />
-                                <ListItemText primary={`Error code : ${item.code}`} />
-                            </ListItem>
-                        ))}
-                    </ul>
-                </li>
-            ))}
-        </List>
+        <ListItem button style={style} key={index}>
+            <ListItemText primary={`${data[index].time} ${data[index].code} ${data[index].name}`} />
+        </ListItem>
     );
 }
 
-Details.propTypes = {
+renderRow.propTypes = {
+    data: PropTypes.any.isRequired,
+    index: PropTypes.number.isRequired,
+    style: PropTypes.object.isRequired,
+};
+
+function VirtualizedList({ Data }) {
+    const classes = useStyles();
+
+    return (
+        <div className={classes.root}>
+            <FixedSizeList height={400} width={300} itemSize={46} itemCount={Data.length} itemData={Data}>
+                {renderRow}
+            </FixedSizeList>
+        </div>
+    );
+}
+
+VirtualizedList.propTypes = {
     Data: PropTypes.any.isRequired
 }
 
-export default Details;
+export default VirtualizedList
