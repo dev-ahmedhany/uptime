@@ -33,7 +33,10 @@ jobs:
       with:
         name: production-files
         path: ./build
-  
+    
+    - name: Run tests
+      run: npm run test
+
   deploy:
     name: Deploy
     needs: build

@@ -27,11 +27,11 @@ function App() {
       <div className="App">
         <br />
         <Typography variant="h6" component="h1" style={{ textAlign: "center" }}>
-          uptime monitor and status page made <br /> with 💖 by <a
+          Uptime Monitor <br /> made with 💖 by <a
             style={{ color: "inherit" }} href="https://github.com/dev-ahmedhany"
-          >Ahmed Hany</a> and Powered By:
+          >Ahmed Hany</a> <br />
+          <br /> Powered By:
         </Typography>
-        <br />
         <CloadflareWorkers style={{ height: "70px" }} />
         <br />
         <MultiAxisLine />
