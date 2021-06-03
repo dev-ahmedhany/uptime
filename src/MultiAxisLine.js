@@ -53,7 +53,7 @@ export default function Line() {
 
     useEffect(() => {
         const fetchData = async () => {
-            const res = await fetch('/API')
+            const res = await fetch('https://uptime.aswu.workers.dev/API')
             return res.ok && await res.json()
         }
         fetchData().then(res => {
