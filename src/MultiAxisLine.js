@@ -39,7 +39,7 @@ export default function Line() {
             // do whatever
 
             let averageDate = Number(temparray[0][0])
-            if (temparray.length > 1) {
+            if (list.length > 1) {
                 averageDate = (Number(temparray[temparray.length - 1][0]) + Number(temparray[0][0])) / 2 + 0.5;
                 averageDate = averageDate % 1 === 0.5 ? averageDate : averageDate + 0.5;
                 averageDate = (chunk % 2 === 0) ? averageDate - 0.5 : averageDate;
