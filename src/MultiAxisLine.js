@@ -38,10 +38,12 @@ export default function Line() {
             temparray = list.slice(i, i + chunk);
             // do whatever
 
-            let averageDate = (Number(temparray[temparray.length - 1][0]) + Number(temparray[0][0])) / 2 + 0.5;
-            averageDate = averageDate % 1 === 0.5 ? averageDate : averageDate + 0.5;
-            averageDate = (chunk % 2 === 0) ? averageDate - 0.5 : averageDate;
-
+            let averageDate = Number(temparray[0][0])
+            if (temparray.length > 1) {
+                averageDate = (Number(temparray[temparray.length - 1][0]) + Number(temparray[0][0])) / 2 + 0.5;
+                averageDate = averageDate % 1 === 0.5 ? averageDate : averageDate + 0.5;
+                averageDate = (chunk % 2 === 0) ? averageDate - 0.5 : averageDate;
+            }
             let averageArray = [];
             for (let k = 0; k < result.length; k++) {
                 const average = temparray.reduce((prev, crnt) => prev + Number(crnt[1][k]), 0) / temparray.length;
