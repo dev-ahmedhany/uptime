@@ -83,7 +83,7 @@ export default function Line() {
                     errorList.push({
                         name: result[i].label,
                         time: (new Date(time)).toLocaleTimeString("en-US", { hour: '2-digit', minute: '2-digit' }),
-                        code: parseInt(Math.abs(((Number(data[timeStamp][i]) > 100000 ? 100000 : 30000) - Number(data[timeStamp][i])) * 1000))
+                        code: Math.ceil(Math.abs(((Number(data[timeStamp][i]) > 100000 ? 100000 : 30000) - Number(data[timeStamp][i])) * 1000))
                     })
                 }
             }
